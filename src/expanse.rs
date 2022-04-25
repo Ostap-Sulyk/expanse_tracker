@@ -16,8 +16,7 @@ impl Expance {
         }
     }
 
-
-    pub fn get_date(&self)-> Date<Local>{
+    pub fn get_date(&self) -> Date<Local> {
         return self.date;
     }
 }
