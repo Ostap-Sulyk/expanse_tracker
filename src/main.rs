@@ -1,7 +1,7 @@
 #![allow(unused)]
 
 mod expanse;
-use expanse::Expance;
+use expanse::Expanse;
 
 fn main() {
     let amount = 5.5;
@@ -11,5 +11,6 @@ fn main() {
     let mut x = String::new();
     std::io::stdin().read_line(&mut x);
 
-    let date = Expance::new(amount, y, m, d);
+    let date = Expanse::new(amount, y, m, d);
+    println!("hello there")
 }
