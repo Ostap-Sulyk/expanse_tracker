@@ -33,10 +33,20 @@ pub fn insert_category(name: &str) -> Result<()> {
     stmt.execute(params![name])?;
     Ok(())
 }
+
 pub fn insert_expense(amount: f64, date: &str, category_name: &str) -> Result<()> {
     let conn = Connection::open("expense_tracker.db")?;
     let mut stmt =
         conn.prepare("INSERT INTO expense (amount, date, category_name) VALUES (?1,?2,?3)")?;
     stmt.execute(params![(amount * 100.0) as i64, date, category_name])?;
+
+    Ok(())
+}
+
+pub fn get_all_categories() -> Result<()> {
+    let conn = Connection::open("expense_tracker.db")?;
+    let mut statement = conn.prepare("SELECT id, name, data FROM person")?;
+    // TODO
+
     Ok(())
 }
