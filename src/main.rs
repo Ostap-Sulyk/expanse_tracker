@@ -1,18 +1,22 @@
 #![allow(unused)]
-use chrono::{NaiveDate, Weekday};
-use inquire::DateSelect;
 
+use std::fmt::format;
+
+use chrono::prelude::*;
+use inquire::{ui::RenderConfig, CustomType};
+//TODO add expense
+// get input for date,
+// get input for amount
+//
 fn add_expense() {
-    let date = DateSelect::new("When expense happened")
-        .with_default(NaiveDate::from_ymd(2021, 8, 1))
-        .with_min_date(NaiveDate::from_ymd(2021, 8, 1))
-        .with_max_date(NaiveDate::from_ymd(2021, 12, 31))
-        .with_week_start(Weekday::Mon)
-        .with_help_message("Possible flight will be displayed accordingly")
+    let amount_prompt = CustomType::<f64>::new("Enter amount: ")
+        .with_formatter(&|i| format!("${:.2}", i))
+        .with_error_message("Please type a valid number")
+        .with_help_message("type amount in us dollars using . as separator")
         .prompt();
 }
+
 fn main() {
-    //TODO add expense
     add_expense()
-    //TODO get all expenses
 }
+//TODO get all expenses
