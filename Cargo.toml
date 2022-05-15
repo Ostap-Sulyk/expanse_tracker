@@ -8,5 +8,4 @@ edition = "2021"
 [dependencies]
 chrono = "0.4.19"
 rusqlite = "0.27.0"
-inquire = "*"
-
+inquire = { version = "0.2.1", features = ["date"]}

@@ -1,6 +1,5 @@
 use rusqlite::{Connection, Result};
 
-#[derive(Debug)]
 struct Expense {
     id: u32,
     amount: i32,
