@@ -2,12 +2,12 @@ use rusqlite::{params, Connection, Result};
 
 pub struct Expense {
     id: u32,
-    amount: i64,
+    amount: f64,
     date: String,
 }
 
 impl Expense {
-    pub fn new(id: Option<u32>, amount: i64, date: String) -> Expense {
+    pub fn new(id: Option<u32>, amount: f64, date: String) -> Expense {
         match id {
             Some(id) => Expense { id, amount, date },
             None => Expense {
@@ -17,7 +17,7 @@ impl Expense {
             },
         }
     }
-    pub fn amount(&self) -> i64 {
+    pub fn amount(&self) -> f64 {
         self.amount
     }
     pub fn date(&self) -> String {
@@ -59,7 +59,7 @@ pub fn select_everything() -> Result<()> {
         println!(
             "{}\t${:.2}\t{}",
             exp.as_ref().unwrap().id,
-            exp.as_ref().unwrap().amount / 100,
+            exp.as_ref().unwrap().amount / 100.0,
             exp.as_ref().unwrap().date
         );
     }
