@@ -45,7 +45,7 @@ pub fn get_amount() -> i64 {
     amount
 }
 
-pub fn main_menu() {
+pub fn main_menu() -> Result<(), ()> {
     use inquire::{error::InquireError, Select};
 
     let options: Vec<&str> = vec!["Add Expense", "See Analytics", "Exit"];
@@ -58,15 +58,20 @@ pub fn main_menu() {
                 let amount = utils::get_amount();
                 let date = utils::get_date();
                 expense_manager::add_expense(amount, date);
-
-            },
+                Ok(())
+            }
             "See Analytics" => {
                 expense_manager::select_everything();
+                Ok(())
             }
             _ => {
                 println!("Bye");
+                Err(())
             }
         },
-        Err(_) => println!("There was an error, please try again"),
+        Err(_) => {
+            println!("There was an error, please try again");
+            Err(())
+        }
     }
 }
