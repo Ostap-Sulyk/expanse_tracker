@@ -1,8 +1,8 @@
-use inquire::{ui::RenderConfig, CustomType, DateSelect};
 use chrono::prelude::*;
 use chrono::NaiveDate;
+use inquire::{ui::RenderConfig, CustomType, DateSelect};
 
-pub fn get_date() {
+pub fn get_date() -> String {
     struct Today {
         year: i32,
         month: u32,
@@ -27,14 +27,38 @@ pub fn get_date() {
         .prompt();
 
     let date = date.unwrap();
+    date.to_string()
 }
-pub fn get_amount() -> f64 {
+
+pub fn get_amount() -> i64 {
     let amount_prompt = CustomType::<f64>::new("Enter amount: ")
         .with_formatter(&|i| format!("${:.2}", i))
         .with_error_message("Please type a valid number")
         .with_help_message("type amount in us dollars using . as separator")
         .prompt();
 
-    let amount: f64 = amount_prompt.unwrap_or_default();
+    let amount: i64 = (amount_prompt.unwrap_or_default() * 100.0) as i64;
     amount
+}
+
+pub fn main_menu() {
+    use inquire::{error::InquireError, Select};
+
+    let options: Vec<&str> = vec![
+        "Add Expense",
+        "See Analytics",
+        "Exit",
+    ];
+
+    let ans: Result<&str, InquireError> =
+        Select::new("What do you want to do?", options).prompt();
+
+    match ans {
+        Ok(choice) => match choice {
+            "Add Expense" => println!("You chose to add expense"),
+            "See Analytics" => println!("Generating report"),
+            _ => println!("Bye"),
+        }
+        Err(_) => println!("There was an error, please try again"),
+    }
 }
