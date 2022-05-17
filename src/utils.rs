@@ -1,9 +1,8 @@
 use chrono::prelude::*;
 use chrono::NaiveDate;
-use inquire::{ui::RenderConfig, CustomType, DateSelect};
+use inquire::{CustomType, DateSelect};
 
 use crate::expense_manager;
-use crate::expense_manager::Expense;
 use crate::utils;
 
 pub fn get_date() -> String {
@@ -57,11 +56,11 @@ pub fn main_menu() -> Result<(), ()> {
             "Add Expense" => {
                 let amount = utils::get_amount();
                 let date = utils::get_date();
-                expense_manager::add_expense(amount, date);
+                expense_manager::add_expense(amount, date).unwrap();
                 Ok(())
             }
             "Generate report" => {
-                expense_manager::generate_report();
+                expense_manager::generate_report().unwrap();
                 Ok(())
             }
             _ => {

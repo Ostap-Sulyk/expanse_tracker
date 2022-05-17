@@ -17,15 +17,15 @@ impl Expense {
             },
         }
     }
-    pub fn amount(&self) -> f64 {
-        self.amount
-    }
-    pub fn date(&self) -> String {
-        self.date.clone()
-    }
+//    pub fn amount(&self) -> f64 {
+//        self.amount
+//    }
+//    pub fn date(&self) -> String {
+//        self.date.clone()
+//    }
 }
 
-fn setup() -> Result<()> {
+pub fn setup() -> Result<()> {
     let conn = Connection::open("expense.db")?;
     conn.execute(
         "create table if not exists expense (
