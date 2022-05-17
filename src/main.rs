@@ -4,7 +4,9 @@ mod expense_manager;
 mod utils;
 use expense_manager::Expense;
 
-// insert
+
+// TODO: select for time frame
+// TODO: generate report for time frame
 fn main() {
     loop {
         match utils::main_menu() {
@@ -13,4 +15,3 @@ fn main() {
         }
     }
 }
-//TODO get all expenses

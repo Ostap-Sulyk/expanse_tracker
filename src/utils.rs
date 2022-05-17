@@ -48,7 +48,7 @@ pub fn get_amount() -> i64 {
 pub fn main_menu() -> Result<(), ()> {
     use inquire::{error::InquireError, Select};
 
-    let options: Vec<&str> = vec!["Add Expense", "See Analytics", "Exit"];
+    let options: Vec<&str> = vec!["Add Expense", "Generate report", "Exit"];
 
     let ans: Result<&str, InquireError> = Select::new("What do you want to do?", options).prompt();
 
@@ -60,8 +60,8 @@ pub fn main_menu() -> Result<(), ()> {
                 expense_manager::add_expense(amount, date);
                 Ok(())
             }
-            "See Analytics" => {
-                expense_manager::select_everything();
+            "Generate report" => {
+                expense_manager::generate_report();
                 Ok(())
             }
             _ => {

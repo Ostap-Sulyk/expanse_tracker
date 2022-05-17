@@ -48,16 +48,16 @@ pub fn add_expense(amount: i64, date: String) -> Result<()> {
     Ok(())
 }
 
-pub fn select_everything() -> Result<()> {
+pub fn generate_report() -> Result<()> {
     let conn = Connection::open("expense.db")?;
     let mut stmt = conn.prepare("select * from expense")?;
     let expense_iter = stmt.query_map([], |row| {
         Ok(Expense::new(row.get(0)?, row.get(1)?, row.get(2)?))
     })?;
-    println!("id\tamount\tdate");
+    println!("id\t\tamount\t\tdate");
     for exp in expense_iter {
         println!(
-            "{}\t${:.2}\t{}",
+            "{}\t\t${:.2}\t\t{}",
             exp.as_ref().unwrap().id,
             exp.as_ref().unwrap().amount / 100.0,
             exp.as_ref().unwrap().date
