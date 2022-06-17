@@ -9,3 +9,4 @@ edition = "2021"
 chrono = "0.4"
 rusqlite = "0.27"
 inquire = { version = "0.2", features = ["date"]}
+ansi_term = "0.12.1"

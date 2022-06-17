@@ -1,13 +1,16 @@
+use ansi_term::Colour;
+use std::cmp::Ordering;
+
 use rusqlite::{params, Connection, Result};
 
 pub struct Expense {
     id: u32,
-    amount: f64,
+    amount: i64,
     date: String,
 }
 
 impl Expense {
-    pub fn new(id: Option<u32>, amount: f64, date: String) -> Expense {
+    pub fn new(id: Option<u32>, amount: i64, date: String) -> Expense {
         match id {
             Some(id) => Expense { id, amount, date },
             None => Expense {
@@ -17,12 +20,9 @@ impl Expense {
             },
         }
     }
-//    pub fn amount(&self) -> f64 {
-//        self.amount
-//    }
-//    pub fn date(&self) -> String {
-//        self.date.clone()
-//    }
+    pub fn get_amount_str(&self) -> String {
+        format!("{:.2}", self.amount as f64 / 100.0)
+    }
 }
 
 pub fn setup() -> Result<()> {
@@ -48,6 +48,7 @@ pub fn add_expense(amount: i64, date: String) -> Result<()> {
     Ok(())
 }
 
+// printing staf to the terminal
 pub fn generate_report() -> Result<()> {
     let conn = Connection::open("expense.db")?;
     let mut stmt = conn.prepare("select * from expense")?;
@@ -56,12 +57,32 @@ pub fn generate_report() -> Result<()> {
     })?;
     println!("id\t\tamount\t\tdate");
     for exp in expense_iter {
-        println!(
-            "{}\t\t${:.2}\t\t{}",
-            exp.as_ref().unwrap().id,
-            exp.as_ref().unwrap().amount / 100.0,
-            exp.as_ref().unwrap().date
+        let x = Expense::new(
+            Some(exp.as_ref().unwrap().id),
+            exp.as_ref().unwrap().amount,
+            exp.as_ref().unwrap().date.clone(),
         );
+        match x.amount.cmp(&0) {
+            Ordering::Less => {
+                println!(
+                    "{}\t\t${:.2}\t\t{}",
+                    x.id,
+                    Colour::Red.paint(x.get_amount_str()),
+                    x.date,
+                )
+            }
+            Ordering::Greater => {
+                println!(
+                    "{}\t\t${:.2}\t\t{}",
+                    x.id,
+                    Colour::Green.paint(x.get_amount_str()),
+                    x.date,
+                )
+            }
+            Ordering::Equal => {
+                println!("{}\t\t${:.2}\t\t{}", x.id, x.get_amount_str(), x.date,)
+            }
+        }
     }
     Ok(())
 }

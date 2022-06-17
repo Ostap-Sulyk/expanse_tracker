@@ -11,6 +11,7 @@ pub fn get_date() -> String {
         month: u32,
         day: u32,
     }
+
     impl Today {
         fn new() -> Today {
             let now = chrono::Utc::now();
@@ -21,6 +22,7 @@ pub fn get_date() -> String {
             }
         }
     }
+
     let today = Today::new();
 
     let date = DateSelect::new("When expense happened?")
