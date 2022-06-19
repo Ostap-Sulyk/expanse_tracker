@@ -24,7 +24,6 @@ pub fn get_date() -> String {
     }
 
     let today = Today::new();
-
     let date = DateSelect::new("When expense happened?")
         .with_default(NaiveDate::from_ymd(today.year, today.month, today.day))
         .with_min_date(NaiveDate::from_ymd(today.year - 1, today.month, today.day))

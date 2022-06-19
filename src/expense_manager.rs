@@ -52,20 +52,26 @@ pub fn add_expense(amount: i64, date: String) -> Result<()> {
 pub fn generate_report() -> Result<()> {
     let conn = Connection::open("expense.db")?;
     let mut stmt = conn.prepare("select * from expense")?;
+
     let expense_iter = stmt.query_map([], |row| {
         Ok(Expense::new(row.get(0)?, row.get(1)?, row.get(2)?))
     })?;
+
     println!("id\t\tamount\t\tdate");
+
     for exp in expense_iter {
         let x = Expense::new(
             Some(exp.as_ref().unwrap().id),
             exp.as_ref().unwrap().amount,
             exp.as_ref().unwrap().date.clone(),
         );
+
+
+        // displaying things to the user
         match x.amount.cmp(&0) {
             Ordering::Less => {
                 println!(
-                    "{}\t\t${:.2}\t\t{}",
+                    "{}\t\t{:.2}\t\t{}",
                     x.id,
                     Colour::Red.paint(x.get_amount_str()),
                     x.date,
@@ -73,14 +79,14 @@ pub fn generate_report() -> Result<()> {
             }
             Ordering::Greater => {
                 println!(
-                    "{}\t\t${:.2}\t\t{}",
+                    "{}\t\t{:.2}\t\t{}",
                     x.id,
                     Colour::Green.paint(x.get_amount_str()),
                     x.date,
                 )
             }
             Ordering::Equal => {
-                println!("{}\t\t${:.2}\t\t{}", x.id, x.get_amount_str(), x.date,)
+                println!("{}\t\t{:.2}\t\t{}", x.id, x.get_amount_str(), x.date,)
             }
         }
     }
